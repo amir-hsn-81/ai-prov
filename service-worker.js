@@ -2,6 +2,7 @@ const CACHE_NAME = 'virtual-try-on-v1';
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
+  '/manifest.json',
   '/index.tsx',
   '/App.tsx',
   '/metadata.json',
@@ -13,6 +14,9 @@ const URLS_TO_CACHE = [
   '/components/CameraFeed.tsx',
   '/components/StyleAdvisorModal.tsx',
   '/services/geminiService.ts',
+  // PWA Icons
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
   // Clothing images
   'https://i.ibb.co/6w2z2fM/tshirt-blue.png',
   'https://i.ibb.co/S68tL2G/jeans-blue.png',

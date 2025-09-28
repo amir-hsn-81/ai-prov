@@ -60,10 +60,7 @@ export async function mergeClothingItem(baseUserImage: string, clothingImage: st
 
   } catch (error) {
     console.error("Error calling Gemini API for image merging:", error);
-    if (error instanceof Error) {
-        throw new Error(`Error merging images: ${error.message}`);
-    }
-    throw new Error("An unknown error occurred while merging the images.");
+    throw new Error("هنگام اعمال لباس خطایی رخ داد. لطفاً دوباره امتحان کنید.");
   }
 }
 
@@ -108,10 +105,7 @@ export async function getStyleAdvice(imageBase64: string, userPrompt: string): P
     
     return text;
   } catch (error) {
-    console.error("Error calling Gemini API:", error);
-    if (error instanceof Error) {
-        throw new Error(error.message);
-    }
-    throw new Error("یک خطای ناشناخته در ارتباط با دستیار هوش مصنوعی رخ داد.");
+    console.error("Error calling Gemini API for style advice:", error);
+    throw new Error("هنگام دریافت مشاوره استایل خطایی رخ داد. لطفاً دوباره امتحان کنید.");
   }
 }

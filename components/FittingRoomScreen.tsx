@@ -3,6 +3,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { ClothingCategory } from '../types';
 import CameraFeed from './CameraFeed';
 import { mergeClothingItem } from '../services/geminiService';
+import StyleAdvisorModal from './StyleAdvisorModal';
 
 const BackIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>;
 const ShirtIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>;
@@ -14,6 +15,7 @@ const UploadIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 
 const CaptureIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 1A5 5 0 1 1 8 3a5 5 0 0 1 0 10z"/><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14z"/></svg>;
 const UndoIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>;
 const ResetIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path><path d="M21 21v-5h-5"></path></svg>;
+const StyleAdvisorIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m11-13v4m-2-2h4m2 11h-4m2 2v-4M12 3v2m0 14v2m-6.121-6.121l1.414-1.414M17.536 6.464l1.414-1.414M6.464 17.536l1.414-1.414m9.243-9.243l1.414-1.414" /></svg>;
 const LoadingSpinner = () => <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-300"></div>;
 
 const CATEGORIES: { name: ClothingCategory; icon: React.ReactElement }[] = [
@@ -34,6 +36,7 @@ const FittingRoomScreen: React.FC<FittingRoomScreenProps> = ({ userImage, onBack
   const [error, setError] = useState<string | null>(null);
   const [editingCategory, setEditingCategory] = useState<ClothingCategory | null>(null);
   const [showItemCamera, setShowItemCamera] = useState(false);
+  const [showStyleAdvisor, setShowStyleAdvisor] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -159,6 +162,9 @@ const FittingRoomScreen: React.FC<FittingRoomScreenProps> = ({ userImage, onBack
           ))}
         </div>
         <div className="mt-auto pt-4 border-t border-blue-800 flex flex-col gap-2">
+            <button onClick={() => setShowStyleAdvisor(true)} disabled={history.length <= 1 || isLoading} className="w-full flex items-center justify-center bg-teal-600 hover:bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <StyleAdvisorIcon /> AI Style Advice
+            </button>
            <button onClick={handleUndo} disabled={history.length <= 1 || isLoading} className="w-full flex items-center justify-center bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                 <UndoIcon /> Undo Last Item
             </button>
@@ -188,6 +194,7 @@ const FittingRoomScreen: React.FC<FittingRoomScreenProps> = ({ userImage, onBack
       
       {editingCategory && <ItemSourceModal />}
       {showItemCamera && <ItemCameraView />}
+      {showStyleAdvisor && <StyleAdvisorModal snapshot={currentImage} onClose={() => setShowStyleAdvisor(false)} />}
     </div>
   );
 };
