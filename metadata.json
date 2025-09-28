@@ -1,0 +1,7 @@
+{
+  "name": "Virtual Try-On Studio",
+  "description": "A step-by-step virtual fitting room where users can use their camera or upload a photo to try on different clothes, shoes, and hairstyles. Features a sleek blue and black theme with professional animations.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
