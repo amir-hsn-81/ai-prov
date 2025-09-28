@@ -19,6 +19,9 @@ function fileToGenerativePart(base64: string, mimeType: string) {
 }
 
 export async function mergeClothingItem(baseUserImage: string, clothingImage: string, itemCategory: string): Promise<string> {
+  if (!navigator.onLine) {
+    throw new Error("اتصال اینترنت برقرار نیست. برای اعمال لباس، لطفاً به اینترنت متصل شوید.");
+  }
   try {
     const model = 'gemini-2.5-flash-image-preview';
 
@@ -66,6 +69,10 @@ export async function mergeClothingItem(baseUserImage: string, clothingImage: st
 
 
 export async function getStyleAdvice(imageBase64: string, userPrompt: string): Promise<string> {
+  if (!navigator.onLine) {
+    throw new Error("اتصال اینترنت برقرار نیست. برای استفاده از مشاوره هوش مصنوعی، لطفاً به اینترنت متصل شوید.");
+  }
+
   try {
     const model = 'gemini-2.5-flash';
     
@@ -103,8 +110,8 @@ export async function getStyleAdvice(imageBase64: string, userPrompt: string): P
   } catch (error) {
     console.error("Error calling Gemini API:", error);
     if (error instanceof Error) {
-        return `خطا در ارتباط با دستیار هوش مصنوعی: ${error.message}`;
+        throw new Error(error.message);
     }
-    return "یک خطای ناشناخته در ارتباط با دستیار هوش مصنوعی رخ داد.";
+    throw new Error("یک خطای ناشناخته در ارتباط با دستیار هوش مصنوعی رخ داد.");
   }
 }
